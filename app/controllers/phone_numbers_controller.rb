@@ -20,6 +20,9 @@ class PhoneNumbersController < ApplicationController
 		number = PhoneNumber.find_by(number: params[:id])
 		unless number.present?
 			number = PhoneNumber.create(number: params[:id])
+			if number.errors.present?
+				render json: {status: :failure, message: "Number not in range"}	and return
+			end
 		else
 			number = PhoneNumber.allocate_number
 		end
