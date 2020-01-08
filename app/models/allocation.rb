@@ -1,16 +1,16 @@
-class PhoneNumber < ApplicationRecord
-	extend PhoneNumbersHelper
+class Allocation < ApplicationRecord
+	extend AllocationsHelper
 	
 	# Validations
 	validates :number, presence: true, uniqueness: true
-	validate :range_check
+	validate :check_number_range
 
 	private
 
-	def range_check
+	def check_number_range
 		in_range = (1111111111..9999999999).include?(self.number)
 	  unless in_range
-	    errors.add(:phone_number, "Phone number out of range")
+	    errors.add(:allocation, "Given Phone Number is out of range")
 	  end
   end
 	

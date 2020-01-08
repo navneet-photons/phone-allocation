@@ -1,6 +1,6 @@
-class PhoneNumbersController < ApplicationController
+class AllocationsController < ApplicationController
 	def index
-		numbers = PhoneNumber.all
+		numbers = Allocation.all
 		if numbers.present? 
 			render json: {numbers: numbers, status: :success, message: "List of all the numbers"}
 		else
@@ -9,7 +9,7 @@ class PhoneNumbersController < ApplicationController
 	end
 
 	def create
-		if number = PhoneNumber.allocate_number
+		if number = Allocation.allocate_number
 			render json: {number: number, status: :success, message: "Number allocated successfully"}
 		else
 			render json: {status: :failure, message: "Failed to allocate number"}
@@ -17,14 +17,14 @@ class PhoneNumbersController < ApplicationController
 	end
 
 	def allocate_custom_number
-		number = PhoneNumber.find_by(number: params[:id])
+		number = Allocation.find_by(number: params[:id])
 		unless number.present?
-			number = PhoneNumber.create(number: params[:id])
+			number = Allocation.create(number: params[:id])
 			if number.errors.present?
 				render json: {status: :failure, message: "Number not in range"}	and return
 			end
 		else
-			number = PhoneNumber.allocate_number
+			number = Allocation.allocate_number
 		end
 		render json: {number: number, status: :success, message: "Number allocated successfully"}
 	end
